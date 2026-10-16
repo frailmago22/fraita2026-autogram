@@ -1,0 +1,1116 @@
+# ---------------------------------------------------------------------------
+# AUTOGRAM CONFIGURATION
+#
+# Non-secret configuration only.
+# Environment variables override values here.
+#
+# Examples:
+#   AUTOGRAM_CONTENT__ACTIVE_PROFILE=romance
+#   AUTOGRAM_ROMANCE__THIRD_PERSON_PROBABILITY=0.60
+#   AUTOGRAM_IMAGE__STEPS=26
+#
+# Credentials live in .env / GitHub Actions secrets.
+# ---------------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------------
+# Editorial content
+# ---------------------------------------------------------------------------
+
+theme: >
+  photorealistic cinematic travel, street, nature and everyday-life
+  photography from around the world, with a different place, subject and
+  light in every image.
+
+seed_salt: "autogram-travel-v1"
+
+# ---------------------------------------------------------------------------
+# Random theme: each image draws fresh values from these pools (OS entropy),
+# so runs do not repeat a subject. The prompt is held to max_prompt_words,
+# under CLIP's 77-token window, so the model reads the whole prompt.
+# ---------------------------------------------------------------------------
+
+random_theme:
+  enabled: true
+  applies_to_profiles: ["travel"]
+  max_prompt_words: 40
+  quality_suffix: "photorealistic, natural colors, sharp focus, detailed, 8k"
+  negative: "illustration, painting, drawing, cartoon, anime, 3d render, cgi, text, watermark, signature, logo, subtitles, blurry, lowres, jpeg artifacts, oversaturated, distorted, deformed, extra limbs, bad anatomy, noise, overexposed"
+  pools:
+    subject:
+      - "a street food vendor flipping dosas on a brass griddle"
+      - "a fisherman mending nets on a wooden jetty at dawn"
+      - "a potter shaping a clay bowl on a spinning wheel"
+      - "a cyclist crossing a stone bridge through morning fog"
+      - "a girl in a yellow raincoat chasing paper boats through a puddle"
+      - "an old tea seller pouring chai from height into small glasses"
+      - "a climber resting on a granite ledge above a glacial lake"
+      - "a snow leopard half hidden on a rocky ridge"
+      - "a lantern maker hanging paper lanterns over a narrow alley"
+      - "a glassblower shaping a glowing orange bulb of glass"
+      - "a lighthouse keeper climbing iron stairs during a storm"
+      - "a monk sweeping leaves from temple steps at sunrise"
+      - "a mechanic working under a vintage car lit by a work lamp"
+      - "a child releasing a kite over a dusty village field"
+      - "a beekeeper lifting a honeycomb frame into golden light"
+      - "a sailor coiling rope on a red fishing boat"
+      - "a violinist playing on an empty train platform at dusk"
+      - "a baker pulling bread from a stone oven"
+      - "a hiker crossing a rope bridge over a misty gorge"
+      - "a flower seller arranging marigolds in a crowded market"
+      - "an astronomer adjusting a brass telescope on a hilltop"
+      - "a surfer waiting for a wave under a pink evening sky"
+      - "a wild horse running through shallow water at sunset"
+      - "a librarian reshelving old books beneath arched windows"
+      - "a dancer's skirt spinning under a single spotlight"
+      - "a shepherd leading goats along a cliff road"
+    setting:
+      - "a misty Himalayan valley"
+      - "a rain-soaked Tokyo alley"
+      - "a sunlit Moroccan medina"
+      - "a windswept Icelandic coastline"
+      - "a rustic Tuscan courtyard"
+      - "a Kerala backwater at dawn"
+      - "a neon-lit Hong Kong street"
+      - "a frozen Scandinavian lake"
+      - "a desert canyon in Arizona"
+      - "a Lisbon tram stop at golden hour"
+      - "a Patagonian grassland"
+      - "a Varanasi riverbank at dusk"
+      - "a cobblestone village in Bavaria"
+      - "an old Havana street"
+      - "a snowy Hokkaido forest"
+      - "a Cornish harbor village"
+    lighting:
+      - "soft window light"
+      - "golden-hour backlight"
+      - "dramatic side light"
+      - "blue-hour ambience"
+      - "overcast diffused light"
+      - "warm tungsten practicals"
+      - "shafts of light through fog"
+      - "harsh noon sun with deep shadows"
+      - "candlelike warm glow"
+      - "neon rim light"
+    lens:
+      - "35mm lens"
+      - "50mm lens"
+      - "85mm portrait lens"
+      - "135mm telephoto lens"
+    mood:
+      - "quiet and contemplative"
+      - "joyful and energetic"
+      - "melancholic"
+      - "tense and cinematic"
+      - "calm and meditative"
+      - "nostalgic"
+      - "adventurous"
+      - "intimate"
+      - "triumphant"
+      - "playful"
+    composition:
+      - "rule-of-thirds framing"
+      - "low-angle hero shot"
+      - "shallow depth of field with bokeh"
+      - "leading lines through the frame"
+      - "symmetrical centered framing"
+      - "layered foreground silhouette"
+      - "tight detail close-up"
+    palette:
+      - "teal and amber grading"
+      - "muted earth tones"
+      - "vibrant saturated colors"
+      - "monochrome with one accent color"
+      - "pastel film tones"
+      - "deep blues with warm highlights"
+
+
+content:
+
+  # The active profile controls the entire creative direction.
+  active_profile: "travel"
+
+  profiles:
+
+    travel:
+
+      theme: >
+        photorealistic cinematic travel, street, nature and everyday-life
+        photography from around the world, one place, subject and light per
+        image.
+
+    romance:
+
+      theme: >
+        photorealistic cinematic Indian romance centered on dramatic marriage
+        proposals between the same recurring couple, emotional love stories,
+        meaningful gestures, beautiful locations, expressive faces, realistic
+        skin, cinematic lighting, flowers, engagement rings and heartfelt
+        romantic storytelling.
+
+      system_prompt: >
+        You are the creative director for a photorealistic romantic
+        photography account. Create specific, visually obvious scenes featuring
+        the same recurring couple. The scene must communicate a clear physical
+        action rather than a generic description of love. Follow the supplied
+        proposal direction exactly. Prioritize realistic human anatomy,
+        natural facial expressions, clear faces, believable body language,
+        cinematic composition and emotionally powerful storytelling.
+
+      subject_instruction: >
+        Create one specific cinematic marriage-proposal scene. The physical
+        proposal action must be obvious from the image. The pre-selected
+        proposal direction is mandatory. Avoid generic standing couple
+        portraits, generic kissing scenes or vague descriptions of romance.
+        Make every scene visually distinct from previous scenes.
+
+      # This is kept as a stable anchor for the recurring couple.
+      # If you already have a stronger couple descriptor, replace this value
+      # with it without changing the rest of the configuration.
+      # Kept SHORT on purpose: CLIP only reads ~77 tokens and this identity
+      # anchor leads the compact prompt, so keeping it tight leaves room for the
+      # scene while still locking the couple's look.
+      prompt_anchor: >
+        the same South Asian couple, consistent faces, warm skin, realistic
+        anatomy
+
+      visual:
+
+        # These are additional descriptors used by brief.py when constructing
+        # the LLM prompt.
+        interaction_styles:
+          - >
+            deeply emotional marriage proposal with intimate eye contact
+          - >
+            heartfelt proposal with genuine surprise and romantic anticipation
+          - >
+            emotional kneeling proposal with expressive body language
+          - >
+            cinematic proposal moment with authentic human reactions
+          - >
+            dramatic romantic proposal with meaningful eye contact
+          - >
+            tender proposal with flowers and visible engagement ring
+
+        moods_and_emotions:
+          - >
+            deeply romantic and emotionally intense
+          - >
+            heartfelt anticipation and joyful surprise
+          - >
+            emotional vulnerability and sincere love
+          - >
+            dramatic romantic tension
+          - >
+            overwhelming happiness and emotional tears
+          - >
+            tender anticipation with cinematic emotion
+          - >
+            bittersweet romantic emotion
+
+        locations:
+
+          romantic:
+            - name: "sunset beach"
+              description: >
+                quiet beach with soft waves, warm horizon and open romantic
+                space
+              lighting: >
+                warm golden-hour sunlight with soft rim light
+              mood: >
+                expansive, intimate and cinematic
+
+            - name: "flower garden"
+              description: >
+                lush romantic garden filled with flowers, pathways and
+                natural greenery
+              lighting: >
+                soft golden sunlight filtered through foliage
+              mood: >
+                dreamy, intimate and joyful
+
+            - name: "rooftop at sunset"
+              description: >
+                elegant rooftop overlooking a glowing city skyline
+              lighting: >
+                warm sunset backlight with subtle city lights
+              mood: >
+                grand, intimate and cinematic
+
+            - name: "mountain viewpoint"
+              description: >
+                scenic mountain overlook with dramatic landscape and distant
+                valleys
+              lighting: >
+                golden-hour sunlight with atmospheric haze
+              mood: >
+                grand, emotional and breathtaking
+
+            - name: "luxury hotel garden"
+              description: >
+                elegant landscaped hotel garden with fountains, flowers and
+                warm architectural lighting
+              lighting: >
+                warm evening illumination with soft practical lights
+              mood: >
+                luxurious, romantic and sophisticated
+
+            - name: "rainy city street"
+              description: >
+                romantic city street after rain with reflections on wet
+                pavement and glowing lights
+              lighting: >
+                warm street lights mixed with cool evening ambience
+              mood: >
+                cinematic, intimate and emotional
+
+            - name: "lakeside promenade"
+              description: >
+                peaceful lakeside walkway with trees, water reflections and
+                distant lights
+              lighting: >
+                soft sunset light transitioning into blue hour
+              mood: >
+                calm, intimate and deeply romantic
+
+            - name: "old palace courtyard"
+              description: >
+                ornate heritage courtyard with arches, stone architecture
+                and decorative gardens
+              lighting: >
+                warm evening architectural lighting
+              mood: >
+                grand, timeless and cinematic
+
+
+          indoor:
+            - name: "elegant candlelit restaurant"
+              description: >
+                intimate upscale restaurant table surrounded by candles,
+                flowers and warm architectural details
+              lighting: >
+                soft candlelight mixed with warm ambient illumination
+              mood: >
+                intimate, luxurious and emotional
+
+            - name: "romantic hotel suite"
+              description: >
+                elegant hotel interior with flowers, warm lamps and refined
+                romantic decor
+              lighting: >
+                soft warm practical lighting
+              mood: >
+                private, intimate and sophisticated
+
+            - name: "grand ballroom"
+              description: >
+                elegant ballroom with chandeliers, polished floors and
+                romantic floral arrangements
+              lighting: >
+                dramatic chandelier lighting with warm highlights
+              mood: >
+                grand, luxurious and cinematic
+
+
+        photography_trends:
+
+          compositions:
+            - >
+              cinematic rule-of-thirds composition with strong foreground
+              depth
+            - >
+              intimate layered composition with foreground flowers
+            - >
+              asymmetric composition with the proposal action as the focal
+              point
+            - >
+              dramatic environmental composition with cinematic depth
+            - >
+              shallow-depth romantic portrait composition
+            - >
+              strong leading lines directing attention toward the proposer
+
+          lighting_styles:
+            - >
+              warm golden-hour backlight
+            - >
+              soft cinematic sunset light
+            - >
+              dramatic warm practical lighting
+            - >
+              soft diffused romantic light
+            - >
+              golden rim light with gentle shadows
+            - >
+              cinematic blue-hour ambience with warm highlights
+
+          color_grading:
+            - >
+              warm cinematic gold and amber tones
+            - >
+              rich romantic reds with warm skin tones
+            - >
+              soft pastel romantic grading
+            - >
+              cinematic teal-and-warm contrast
+            - >
+              warm golden filmic tones
+            - >
+              natural filmic colors with subtle romantic warmth
+
+          depth_of_field:
+            - >
+              shallow depth of field with faces sharply focused
+            - >
+              cinematic background separation
+            - >
+              moderate depth of field keeping the proposal action readable
+            - >
+              soft bokeh behind the couple
+            - >
+              environmental depth with clear subjects
+
+
+# ---------------------------------------------------------------------------
+# Romance scene controls
+# ---------------------------------------------------------------------------
+
+romance:
+
+  enabled: true
+
+  # Both directions are deliberately enabled.
+  # The seeded RNG chooses one per generated scene.
+  proposal_directions:
+    - "boy_proposes_to_girl"
+    - "girl_proposes_to_boy"
+
+  # Approximately 45% of scenes include the third woman.
+  third_person_probability: 0.45
+
+  # Make the physical proposal action explicit.
+  require_kneeling: true
+  require_flowers: true
+  require_ring: true
+
+  # Specific ring style requested.
+  ring_style: >
+    a clearly visible elegant marquise-cut engagement ring
+
+  # Third woman is a genuine love-triangle character, not a random extra.
+  third_person_role: >
+    a heartbroken woman in unrequited love for the boy
+
+  third_person_emotion: >
+    crying, quietly sobbing, tears visibly running down her cheeks,
+    heartbroken but not hostile
+
+  cinematic_style: >
+    grand cinematic Indian romantic-film atmosphere, emotionally expressive
+    faces, dramatic romantic lighting, heartfelt Bollywood-style visual
+    storytelling, photorealistic, realistic human anatomy, natural skin
+
+    ai_tools:
+
+      theme: >
+        high-quality educational infographic-style visual explanations of
+        artificial intelligence concepts, machine learning algorithms, and
+        cutting-edge AI research, with clear readable titles, data flow
+        diagrams, conceptual visualizations, technical accuracy, modern
+        design aesthetics, and professional visual communication.
+
+      system_prompt: >
+        You are a technical educator and visual communication specialist
+        creating educational infographic content about AI and machine
+        learning concepts. Generate clear, visually informative scenes that
+        explain complex AI topics in an accessible way. Each image must
+        feature readable text elements, visual hierarchy, data flow
+        representations, and conceptual diagrams. Prioritize clarity over
+        complexity, with professional design aesthetics and precise technical
+        accuracy. Make abstract concepts visually concrete through
+        metaphorical representations, flowcharts, and layered composition.
+
+      subject_instruction: >
+        Create one specific educational visual explanation of an AI or
+        machine learning concept. The scene must communicate the core idea
+        clearly through visual elements. Include readable title text and
+        supporting visual metaphors or diagrams. Avoid generic AI imagery;
+        make the specific technical concept visually obvious and
+        understandable. Use modern design principles with clear visual
+        hierarchy and color-coded information flow.
+
+      prompt_anchor: >
+        professional educational infographic, technical diagram, clean modern
+        design, readable sans-serif typography, scientific accuracy
+
+      visual:
+
+        interaction_styles:
+          - >
+            clear visual explanation with data flowing from left to right
+          - >
+            technical diagram showing algorithmic process step-by-step
+          - >
+            conceptual visualization with labeled components and relationships
+          - >
+            infographic with visual hierarchy highlighting key concepts
+          - >
+            flowchart showing information transformation and processing
+          - >
+            before-and-after comparison demonstrating concept application
+          - >
+            layered visual representation of nested concepts and structures
+          - >
+            color-coded system showing different component interactions
+
+        moods_and_emotions:
+          - >
+            clear, educational, and intellectually stimulating
+          - >
+            professional, authoritative, and trustworthy
+          - >
+            modern, sleek, and technologically sophisticated
+          - >
+            approachable, educational, and welcoming to learners
+          - >
+            precise, systematic, and methodical
+          - >
+            innovative, forward-thinking, and cutting-edge
+          - >
+            organized, logical, and easy to follow
+          - >
+            engaging and visually compelling while remaining accurate
+
+        locations:
+
+          ai_concepts:
+
+            - name: "RAG Architecture"
+              description: >
+                visual diagram showing Retrieval-Augmented Generation system
+                with vector databases, query processing, and response generation
+                components connected by data flow arrows
+              lighting: >
+                bright, clean, professional technical visualization lighting
+              mood: >
+                systematic, organized, and technically sophisticated
+
+            - name: "In-Context Learning"
+              description: >
+                infographic depicting how language models learn from examples
+                within context window, showing prompt, context examples, and
+                output generation with visual emphasis on attention mechanisms
+              lighting: >
+                modern, clean, with highlighted focus areas and clear visual
+                hierarchy
+              mood: >
+                educational, illuminating, and intellectually engaging
+
+            - name: "Transformer Architecture"
+              description: >
+                technical diagram of transformer blocks showing multi-head
+                attention, feed-forward networks, and token processing flows
+                with color-coded components and layer descriptions
+              lighting: >
+                technical, precise, with distinct lighting on different layers
+              mood: >
+                complex yet organized, sophisticated and systematic
+
+            - name: "Token Embedding Space"
+              description: >
+                3D-style visualization of high-dimensional embedding space
+                with token clusters, semantic relationships shown as proximity,
+                and conceptual groupings highlighted
+              lighting: >
+                modern technical lighting with gradient emphasis
+              mood: >
+                scientific, precise, and cognitively engaging
+
+            - name: "Fine-tuning Process"
+              description: >
+                infographic showing base model refinement through supervised
+                learning, with dataset preparation, training loop, and model
+                adaptation stages clearly labeled
+              lighting: >
+                clean educational lighting with progressive stages highlighted
+              mood: >
+                methodical, systematic, and professionally instructional
+
+            - name: "Prompt Engineering Flow"
+              description: >
+                visual workflow showing prompt iteration, from basic queries
+                through structured templates to optimized prompts, with
+                quality metrics displayed
+              lighting: >
+                bright, clear, with emphasis on transformation stages
+              mood: >
+                practical, educational, and results-oriented
+
+            - name: "Multimodal AI System"
+              description: >
+                architecture diagram showing how text, images, and audio
+                inputs are processed through unified embedding space with
+                visual representation of cross-modal connections
+              lighting: >
+                modern, multi-layered lighting showing integrated processing
+              mood: >
+                innovative, interconnected, and sophisticated
+
+            - name: "Knowledge Graph Integration"
+              description: >
+                network diagram showing entities and relationships, connected
+                to language model components for enhanced knowledge retrieval
+                and reasoning
+              lighting: >
+                clean, precise technical visualization with clear nodes
+              mood: >
+                organized, systematic, and knowledge-centric
+
+            - name: "Chain-of-Thought Reasoning"
+              description: >
+                step-by-step visual representation of multi-hop reasoning,
+                with intermediate conclusions and reasoning paths clearly
+                annotated and color-coded
+              lighting: >
+                progressive lighting showing thinking stages
+              mood: >
+                analytical, methodical, and intellectually rigorous
+
+            - name: "Loss Landscape Visualization"
+              description: >
+                3D-style terrain showing model training trajectory through
+                optimization landscape, with convergence points and local
+                minima visualized
+              lighting: >
+                technical gradient lighting showing elevation changes
+              mood: >
+                scientific, precise, and showing dynamic progress
+
+            - name: "Attention Mechanism"
+              description: >
+                detailed visualization of attention weights flowing between
+                tokens, with heatmaps showing focus patterns and relationship
+                strengths
+              lighting: >
+                bright, precise technical lighting with heatmap gradients
+              mood: >
+                precise, analytical, and technically sophisticated
+
+            - name: "Model Scaling Laws"
+              description: >
+                graph-based infographic showing relationships between model
+                size, training compute, and performance with trend lines and
+                predictive trajectories
+              lighting: >
+                clean, professional data visualization lighting
+              mood: >
+                data-driven, forward-looking, and strategic
+
+        photography_trends:
+
+          compositions:
+            - >
+              centered, symmetrical composition emphasizing core concept in
+              middle
+            - >
+              rule-of-thirds with key technical elements at intersection
+              points
+            - >
+              layered composition showing system components at different
+              depths
+            - >
+              flow-based composition with data pathways directing visual
+              attention
+            - >
+              gridded composition with organized technical information blocks
+            - >
+              diagonal composition showing progression or transformation
+            - >
+              concentric composition with central concept surrounded by
+              related elements
+            - >
+              split-screen comparison composition
+
+          lighting_styles:
+            - >
+              bright, clean technical lighting with minimal shadows
+            - >
+              modern flat design lighting with solid color areas
+            - >
+              gradient lighting emphasizing data flow and transformation
+            - >
+              layered lighting separating foreground, midground, and background
+              components
+            - >
+              accent lighting highlighting key technical elements
+            - >
+              scientific precision lighting with color-coded information areas
+            - >
+              modern professional lighting with high clarity and saturation
+            - >
+              neon-inspired accent lighting for technical elements
+
+          color_grading:
+            - >
+              professional tech palette: blues, teals, and purples with
+              white backgrounds
+            - >
+              clean grading with primary colors for component differentiation
+            - >
+              minimalist palette: monochromatic with strategic accent colors
+            - >
+              data visualization palette: complementary colors showing
+              contrasts
+            - >
+              modern gradient: smooth color transitions showing relationships
+            - >
+              high contrast grading for clarity and readability
+            - >
+              scientific grading: cool tones for technical authority
+            - >
+              vibrant tech palette: bright complementary colors for
+              engagement
+
+          depth_of_field:
+            - >
+              sharp focus throughout for maximum technical clarity
+            - >
+              moderate depth of field keeping text and diagrams sharp
+            - >
+              layered focus with foreground elements sharper than background
+            - >
+              focus layers emphasizing different system components
+            - >
+              consistent sharpness across technical diagram elements
+
+        visual_elements:
+          - >
+            readable sans-serif typography with clear hierarchy
+          - >
+            color-coded arrows showing data flow and connections
+          - >
+            geometric shapes representing algorithms and processes
+          - >
+            node-and-link diagrams for system architecture
+          - >
+            heatmaps and gradients showing intensity or relationships
+          - >
+            grid systems for organized information presentation
+          - >
+            icons and symbols for technical concepts
+          - >
+            flowchart connectors and decision nodes
+          - >
+            measurement scales and numerical annotations
+          - >
+            legend and key information boxes
+
+        technical_accuracy_elements:
+          - >
+            mathematically correct visualizations of concepts
+          - >
+            accurate representation of algorithms and processes
+          - >
+            precise labeling of technical terminology
+          - >
+            correct data relationship and flow representation
+          - >
+            scientifically grounded visual metaphors
+
+
+# ---------------------------------------------------------------------------
+# Brief generation
+# ---------------------------------------------------------------------------
+
+brief:
+
+  history_depth: 30
+
+  dedupe_threshold: 85
+
+  # Fewer retries -> less LLM time on a slow CPU runner.
+  max_retries: 2
+
+  axes:
+
+    camera_angle:
+      - "eye-level"
+      - "low angle"
+      - "high angle"
+      - "slight dutch angle"
+      - "side profile"
+      - "three-quarter angle"
+
+    season:
+      - "spring"
+      - "summer"
+      - "autumn"
+      - "winter"
+
+    focal_length:
+      - "35mm"
+      - "50mm"
+      - "85mm portrait"
+      - "105mm"
+      - "135mm telephoto"
+
+    subject_scale:
+      - "medium shot"
+      - "three-quarter shot"
+      - "full-body shot"
+      - "medium-wide shot"
+
+
+# ---------------------------------------------------------------------------
+# Ollama
+# ---------------------------------------------------------------------------
+
+llm:
+
+  host_env: "OLLAMA_HOST"
+
+  model: "qwen2.5:3b-instruct"
+
+  hq_model: "qwen2.5:7b-instruct"
+
+  ready_timeout_s: 120
+
+  # Lower so a hung Ollama request fails fast instead of burning minutes.
+  request_timeout_s: 120
+
+  temperature: 0.8
+
+  max_retries: 3
+
+
+# ---------------------------------------------------------------------------
+# Image generation
+# ---------------------------------------------------------------------------
+
+image:
+
+  model: "Lykon/dreamshaper-8"
+
+  hq_model: "black-forest-labs/FLUX.1-schnell"
+
+  # DreamShaper SD1.5 photorealistic path. 20 DPM++ Karras steps ≈ the quality
+  # of 26 at ~25% less time — the dominant cost on a CPU runner.
+  steps: 20
+
+  guidance_scale: 6.5
+
+  # FLUX/turbo path.
+  hq_steps: 4
+
+  hq_guidance_scale: 0.0
+
+  width: 576
+
+  height: 720
+
+  # Quality levers for the SD1.5 CPU path (ignored on the FLUX/GPU path).
+  scheduler: "dpmpp_karras"          # DPM++ 2M Karras: sharper ("" = model default)
+  vae: "stabilityai/sd-vae-ft-mse"   # crisper detail + colour ("" to disable)
+  # Hi-res fix ON: a second img2img pass that upsizes and refines faces/detail
+  # (a reliable, dependency-free fix for distorted faces). Adds ~50-70% per
+  # image; drop reel.num_scenes to 2 if you hit the CI time budget.
+  hires_fix: true
+  hires_scale: 1.5
+  hires_denoise: 0.35                 # lower -> refines without changing identity
+  hires_steps: 16
+  # GFPGAN face restoration (if installed) — strongest fix for distorted faces.
+  face_restore: true
+
+  # CLIP reads only the first 77 tokens. compact_prompt builds a short,
+  # identity-first prompt that fits (the couple anchor is never truncated);
+  # positive_template below is only used when compact_prompt is false.
+  compact_prompt: true
+  max_prompt_words: 45
+  quality_suffix: "photorealistic, cinematic, natural skin, sharp focus, 8k"
+  # compel (if installed) encodes prompts past CLIP's 77 tokens with no
+  # truncation — free, negligible time, and safely optional.
+  use_compel: true
+
+  positive_template: >
+    {framing},
+    photorealistic cinematic romantic photograph of {characters},
+    {interaction},
+    {subject},
+    in {setting},
+    {lighting},
+    {mood},
+    {composition},
+    {color_palette},
+    {time_of_day},
+    {style_modifiers},
+    natural skin texture,
+    realistic human anatomy,
+    realistic facial features,
+    expressive eyes,
+    realistic hands,
+    realistic clothing,
+    highly detailed,
+    sharp focus,
+    professional DSLR photography,
+    cinematic depth,
+    natural lighting,
+    8k
+
+  negative_template: >
+    illustration,
+    painting,
+    drawing,
+    cartoon,
+    anime,
+    3d render,
+    cgi,
+    plastic skin,
+    deformed,
+    disfigured,
+    mutated hands,
+    extra fingers,
+    missing fingers,
+    extra limbs,
+    bad anatomy,
+    lowres,
+    blurry,
+    text,
+    watermark,
+    signature,
+    jpeg artifacts,
+    oversaturated,
+    ugly,
+    deformed face,
+    distorted face,
+    asymmetric face,
+    extra faces,
+    extra heads,
+    fused faces,
+    malformed face,
+    blurry face,
+    disfigured eyes,
+    duplicate person,
+    duplicate couple,
+    duplicate girl,
+    duplicate boy,
+    wrong proposal direction,
+    boy and girl both kneeling,
+    generic standing couple,
+    missing ring,
+    missing flowers,
+    malformed ring,
+    distorted ring,
+    extra ring,
+    nudity,
+    nsfw,
+    revealing clothing,
+    cleavage,
+    lingerie,
+    bikini,
+    swimwear
+
+
+# ---------------------------------------------------------------------------
+# Post-processing
+# ---------------------------------------------------------------------------
+
+postproc:
+
+  aspect: "4:5"
+
+  jpeg_quality: 92
+
+  unsharp_radius: 1.2
+
+  unsharp_percent: 80
+
+  unsharp_threshold: 3
+
+  max_bytes: 8388608
+
+
+# ---------------------------------------------------------------------------
+# Captions
+# ---------------------------------------------------------------------------
+
+caption:
+
+  tone: >
+    curious, vivid, cinematic and understated
+
+  emoji_budget: 2
+
+  max_length: 2200
+
+  hashtag_placement: "caption"
+
+
+# ---------------------------------------------------------------------------
+# Hashtags
+# ---------------------------------------------------------------------------
+
+hashtags:
+
+  min_count: 12
+
+  max_count: 18
+
+  tier_broad: 0.30
+
+  tier_mid: 0.50
+
+  tier_niche: 0.20
+
+  brand_tags:
+    - "autogram"
+    - "travelphotography"
+
+
+# ---------------------------------------------------------------------------
+# Safety / quality gates
+# ---------------------------------------------------------------------------
+
+gates:
+
+  nsfw: true
+
+  degenerate: true
+
+  profanity: true
+
+  degenerate_min_variance: 60.0
+
+  degenerate_dark_mean: 12.0
+
+  degenerate_bright_mean: 243.0
+
+
+# ---------------------------------------------------------------------------
+# Reel generation
+# ---------------------------------------------------------------------------
+
+reel:
+
+  enabled: true
+
+  # Fewer scenes -> fewer CPU images per reel (the main runtime lever).
+  num_scenes: 3
+
+  seconds_per_image: 3.2
+
+  crossfade_s: 0.35
+
+  fps: 30
+
+  width: 1080
+
+  height: 1920
+
+  zoom: 1.12
+
+  audio_dir: "assets/audio"
+
+  ai_video:
+
+    enabled: true
+
+    mode: "auto"
+
+    provider: "huggingface"
+
+    # Scene 1 and scene 3 receive AI image-to-video attempts.
+    # Remaining scenes use FFmpeg animation.
+    ai_scene_indexes:
+      - 0
+      - 2
+
+    duration_s: 3
+
+    # Bounded so a stuck/cold provider falls back to FFmpeg quickly.
+    timeout_s: 60
+
+    poll_interval_s: 5
+
+    fallback_to_ffmpeg: true
+
+    keep_intermediate: false
+
+
+# ---------------------------------------------------------------------------
+# Persistent state
+# ---------------------------------------------------------------------------
+
+state:
+
+  history_path: "state/history.json"
+
+  session_path: "state/ig_session.json"
+
+  out_dir: "out"
+
+
+# ---------------------------------------------------------------------------
+# Carousel (multi-image album) generation
+# ---------------------------------------------------------------------------
+
+carousel:
+
+  enabled: true
+
+  # Instagram allows 2-10 slides; each slide is a distinct scene of the couple.
+  num_slides: 3
+
+
+# ---------------------------------------------------------------------------
+# Content mix
+#
+# When a run does not force a content type (--content-type), one is picked at
+# random per run using these weights. Weight 0 disables a type. Override per
+# account under `accounts:` below.
+# ---------------------------------------------------------------------------
+
+content_mix:
+  reel: 3
+  carousel: 1
+  photo: 1
+
+
+# ---------------------------------------------------------------------------
+# YouTube Shorts (only used when an account's backend is "youtube")
+# ---------------------------------------------------------------------------
+
+youtube:
+  privacy_status: "private"     # private | unlisted | public
+  category_id: "22"             # 22 = People & Blogs
+
+
+# ---------------------------------------------------------------------------
+# Linked accounts
+#
+# One repo can now drive several Instagram/YouTube accounts. Each account picks
+# a content profile and a content mix; its CREDENTIALS are supplied by the single
+# `AUTOGRAM_ACCOUNTS` secret (a JSON array matched to these entries by `id`) so
+# the flat IG_*/YOUTUBE_* env-var names never collide. Example secret:
+#
+#   AUTOGRAM_ACCOUNTS='[{"id":"romance","ig_username":"..","ig_session_b64":".."},
+#                       {"id":"shorts","youtube_client_id":"..","youtube_client_secret":"..","youtube_refresh_token":".."}]'
+#
+# Leave this list empty to keep the classic single-account behaviour (creds come
+# from the flat IG_*/YOUTUBE_* env vars, history in state/history.json).
+# ---------------------------------------------------------------------------
+
+accounts:
+  - id: romance_account
+    platform: instagram        # instagram | youtube
+    backend: graph        # instagrapi | graph | youtube ("" -> derived)
+    profile: travel            # a key under content.profiles
+    enabled: true
+    content_mix: { reel: 3, carousel: 1, photo: 1 }
+    audio_dir: "assets/audio/romantic"
+  - id: aitools_account
+    platform: instagram
+    backend: graph
+    profile: ai_tools          # a key under content.profiles
+    enabled: true
+    content_mix: { reel: 1, carousel: 2, photo: 2 }
+    audio_dir: "assets/audio/tech_music"
